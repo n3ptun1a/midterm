@@ -111,4 +111,4 @@ function drawField() {
   rect(320, 340, 60, 40, 10);
   fill(255);
   textSize(16);
-  text("Run", 340, 365);
+
