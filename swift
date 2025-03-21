@@ -118,3 +118,12 @@ function drawField() {
     distance += runSpeed * 0.1; // Shrinks gradually
   }
 }
+
+function mousePressed() {
+  if (scene < 3) {
+    scene++; // Advances through scenes 0-2
+  } else if (scene === 3 && mouseX > 320 && mouseX < 380 && mouseY > 340 && mouseY < 380) {
+    buttonPressed++;
+    runSpeed = buttonPressed * 0.2; // Gradual increase in speed
+  }
+}
