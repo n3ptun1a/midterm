@@ -51,3 +51,23 @@ function drawGirl(expression) {
     line(180, 190, 190, 185);
     line(220, 190, 210, 185);
     ellipse(200, 215, 30, 10); // Straight faced
+
+        // Phone glow effect
+    phoneGlow = sin(frameCount * 0.1) * 50;
+    fill(255, 255, 200, 150 + phoneGlow);
+    ellipse(200, 250, 100, 60);
+  }
+
+  // Phone appearance
+  if (scene === 1) {
+    fill(0);
+    rect(170, 260, 60, 100, 10);
+  }
+}
+
+function drawPhoneScreen() {
+  background(0);
+  fill(255);
+  rect(50, 20, 300, 360, 20); // Phone frame
+
+  // Messages (received texts)
