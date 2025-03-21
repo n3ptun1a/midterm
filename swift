@@ -110,5 +110,11 @@ function drawField() {
   fill(255, 0, 0);
   rect(320, 340, 60, 40, 10);
   fill(255);
-  textSize(16);
 
+  // Gradual running movement
+  if (buttonPressed > 0) {
+    girlX -= runSpeed * 0.5; // Moves left gradually
+    girlY -= runSpeed * 0.3; // Moves up
+    distance += runSpeed * 0.1; // Shrinks gradually
+  }
+}
