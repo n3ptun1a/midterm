@@ -71,3 +71,44 @@ function drawPhoneScreen() {
   rect(50, 20, 300, 360, 20); // Phone frame
 
   // Messages (received texts)
+    textSize(20);
+  fill(200);
+  rect(80, 80, 180, 40, 10);
+  fill(0);
+  text("😍💖🥺", 120, 105);
+
+  fill(200);
+  rect(80, 140, 180, 40, 10);
+  fill(0);
+  text("💘😩✨", 120, 165);
+
+  fill(200);
+  rect(80, 200, 180, 40, 10);
+  fill(0);
+  text("💕😭🌹", 120, 225);
+
+  fill(200);
+  rect(80, 260, 180, 40, 10);
+  fill(0);
+  text("💞🥰🔥", 120, 285);
+}
+
+function drawField() {
+  background(50, 200, 50); // Grass
+
+  fill(255, 220, 185);
+  ellipse(girlX, girlY - distance * 5, 50 - distance, 60 - distance); // Face
+
+  // Hair
+  fill(0);
+  ellipse(girlX, girlY - distance * 5 - 10, 60 - distance, 80 - distance); 
+
+  fill(0);
+  rect(girlX - 10, girlY - distance * 5, 20 - distance, 40 - distance); // Body
+
+  // Button
+  fill(255, 0, 0);
+  rect(320, 340, 60, 40, 10);
+  fill(255);
+  textSize(16);
+  text("Run", 340, 365);
