@@ -47,7 +47,7 @@ function drawGirl(expression) {
   ellipse(200, 200, 100, 120);
 
   if (expression === "smile") {
-    // happy
+    // happy face
     fill(0);
     ellipse(180, 190, 10, 10);
     ellipse(220, 190, 10, 10);
@@ -55,39 +55,44 @@ function drawGirl(expression) {
     stroke(0);
     arc(200, 210, 30, 10, 0, PI);
   } else if (expression === "concern") {
-    // take a guess
+    // sad eyes
     fill(0);
     ellipse(180, 190, 8, 10);
     ellipse(220, 190, 8, 10);
 
+    // brows
     stroke(0);
     strokeWeight(2);
-    line(175, 185, 185, 180); // eyebrows
-    line(225, 185, 215, 180); 
+    line(175, 185, 185, 180);
+    line(225, 185, 215, 180);
 
+    // sad mouth
     noFill();
-    arc(200, 220, 30, 10, PI + QUARTER_PI, TWO_PI - QUARTER_PI); // worried mouth
+    arc(200, 220, 30, 10, PI + QUARTER_PI, TWO_PI - QUARTER_PI);
 
-    // phone glow
+    // glow
     phoneGlow = sin(frameCount * 0.3) * 50;
     noStroke();
     fill(255, 255, 200, 150 + phoneGlow);
     ellipse(200, 250, 100, 60);
   }
 
+  // phone
   noStroke();
   if (scene === 1) {
     fill(0);
-    rect(170, 260, 60, 100, 10); // phone
+    rect(170, 260, 60, 100, 10);
   }
 }
 
 function drawPhoneLoveBombing() {
   background(20);
 
+  // phone screen
   fill(255);
-  rect(50, 20, 300, 360, 20); // phone back
+  rect(50, 20, 300, 360, 20);
 
+  // hearts
   if (frameCount % heartSpawnRate === 0) {
     let x = random(80, 280);
     let y = 360;
@@ -108,21 +113,35 @@ function drawField() {
   background(50, 200, 50);
   generateGrass();
 
-  // running
+  // scale stuff
+  let scaleFactor = 1 - distance * 0.015;
+  scaleFactor = constrain(scaleFactor, 0.2, 1);
+  let headY = girlY - distance * 5;
+
+  // face
+  let headW = 50 * scaleFactor;
+  let headH = 60 * scaleFactor;
   fill(255, 220, 185);
-  ellipse(girlX, girlY - distance * 5, 50 - distance, 60 - distance); // Face
+  ellipse(girlX, headY, headW, headH);
 
+  // hair
+  let hairW = 60 * scaleFactor;
+  let hairH = 80 * scaleFactor;
   fill(0);
-  ellipse(girlX, girlY - distance * 5 - 10, 60 - distance, 80 - distance); // Hair
+  ellipse(girlX, headY - 10 * scaleFactor, hairW, hairH);
 
-  fill(150, 100, 200); // Purple torso
-  rect(girlX - 20 + distance, girlY - distance * 4 + 30, 40 - distance, height, 20);
+  // shirt
+  let torsoW = 40 * scaleFactor;
+  let torsoH = 100 * scaleFactor;
+  fill(150, 100, 200);
+  rect(girlX - torsoW / 2, headY + 30 * scaleFactor, torsoW, torsoH, 20 * scaleFactor);
 
-  // phone button
+  // phone btn
   let glowLevel = map(buttonPressed, 0, 10, 80, 255);
   fill(0);
   rect(330, 350, 30, 50, 5);
 
+  // pink heart
   push();
   translate(345, 375);
   fill(255, 105, 180, glowLevel);
