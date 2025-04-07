@@ -7,6 +7,7 @@ let distance = 1;
 let buttonPressed = 0;
 let hearts = [];
 let heartSpawnRate = 5;
+let cloudOffset = 0;
 
 function setup() {
   createCanvas(400, 400);
@@ -110,8 +111,9 @@ function drawPhoneLoveBombing() {
 }
 
 function drawField() {
-  background(50, 200, 50);
-  generateGrass();
+  background(120, 200, 255); // sky
+  drawClouds();              // clouds
+  generateGrass();           // grass
 
   // scale stuff
   let scaleFactor = 1 - distance * 0.015;
@@ -163,15 +165,33 @@ function drawField() {
 
 function generateGrass() {
   noStroke();
-  for (let x = 0; x < width; x += 2) {
-    let noiseVal = noise(x * 0.05, frameCount * 0.01);
-    let h = map(noiseVal, 0, 1, 10, 40);
-    fill(30, random(150, 200), 30);
-    rect(x, height - h, 2, h);
+  for (let x = 0; x < width; x += 3) {
+    for (let y = 0; y < height; y += 4) {
+      let noiseVal = noise(x * 0.05, y * 0.05, frameCount * 0.01);
+      let len = map(noiseVal, 0, 1, 2, 6);
+      fill(30, random(140, 190), 30, 200);
+      rect(x, y, 1, len);
+    }
   }
 }
 
-function mousePressed() {
+function drawClouds() {
+  cloudOffset += 0.003;
+  for (let x = 0; x < width + 60; x += 60) {
+    let y = noise(x * 0.01, cloudOffset) * 50 + 20;
+    drawCloud(x - (frameCount * 0.3) % (width + 60), y);
+  }
+}
+
+function drawCloud(cx, cy) {
+  noStroke();
+  fill(255, 255, 255, 220);
+  ellipse(cx, cy, 40, 25);
+  ellipse(cx + 15, cy + 5, 30, 20);
+  ellipse(cx - 15, cy + 5, 30, 20);
+}
+
+function mousePressed() { // scenes
   if (scene < 3) {
     scene++;
   } else if (scene === 3 && mouseX > 330 && mouseX < 360 && mouseY > 350 && mouseY < 400) {
@@ -198,7 +218,7 @@ class Heart {
     this.x += sin(frameCount * this.wiggle + this.offset);
   }
 
-  display() {
+  display() { // hearts btw
     fill(this.r, this.g, this.b);
     noStroke();
     beginShape();
