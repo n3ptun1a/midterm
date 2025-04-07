@@ -38,16 +38,16 @@ function drawGirl(expression) {
   fill(255, 220, 185);
   rect(185, 255, 30, 20, 5);
 
-  // purp shirt
+  // shirt
   fill(150, 100, 200);
-  ellipse(200, 320, 100, 80);
+  rect(160, 275, 80, height - 275, 20);
 
   // face
   fill(255, 220, 185);
   ellipse(200, 200, 100, 120);
 
   if (expression === "smile") {
-    // happy eyes
+    // happy
     fill(0);
     ellipse(180, 190, 10, 10);
     ellipse(220, 190, 10, 10);
@@ -55,22 +55,20 @@ function drawGirl(expression) {
     stroke(0);
     arc(200, 210, 30, 10, 0, PI);
   } else if (expression === "concern") {
-    // worried eyes
+    // take a guess
     fill(0);
     ellipse(180, 190, 8, 10);
     ellipse(220, 190, 8, 10);
 
-    // eyebrows
     stroke(0);
     strokeWeight(2);
-    line(175, 185, 185, 180); // Left brow angled up
-    line(225, 185, 215, 180); // Right brow angled up
+    line(175, 185, 185, 180); // eyebrows
+    line(225, 185, 215, 180); 
 
-    // worried mouth
     noFill();
-    arc(200, 220, 30, 10, PI + QUARTER_PI, TWO_PI - QUARTER_PI);
+    arc(200, 220, 30, 10, PI + QUARTER_PI, TWO_PI - QUARTER_PI); // worried mouth
 
-    // glow from phone
+    // phone glow
     phoneGlow = sin(frameCount * 0.3) * 50;
     noStroke();
     fill(255, 255, 200, 150 + phoneGlow);
@@ -80,7 +78,7 @@ function drawGirl(expression) {
   noStroke();
   if (scene === 1) {
     fill(0);
-    rect(170, 260, 60, 100, 10); // Phone
+    rect(170, 260, 60, 100, 10); // phone
   }
 }
 
@@ -88,7 +86,7 @@ function drawPhoneLoveBombing() {
   background(20);
 
   fill(255);
-  rect(50, 20, 300, 360, 20); // Phone frame
+  rect(50, 20, 300, 360, 20); // phone back
 
   if (frameCount % heartSpawnRate === 0) {
     let x = random(80, 280);
@@ -107,24 +105,27 @@ function drawPhoneLoveBombing() {
 }
 
 function drawField() {
-  background(50, 200, 50); // Grass
+  background(50, 200, 50);
+  generateGrass();
 
+  // running
   fill(255, 220, 185);
   ellipse(girlX, girlY - distance * 5, 50 - distance, 60 - distance); // Face
 
   fill(0);
-  ellipse(girlX, girlY - distance * 5 - 10, 60 - distance, 80 - distance); 
-  rect(girlX - 10, girlY - distance * 5, 20 - distance, 40 - distance); // Body
+  ellipse(girlX, girlY - distance * 5 - 10, 60 - distance, 80 - distance); // Hair
 
-  // glowing phone-button heart
+  fill(150, 100, 200); // Purple torso
+  rect(girlX - 20 + distance, girlY - distance * 4 + 30, 40 - distance, height, 20);
+
+  // phone button
   let glowLevel = map(buttonPressed, 0, 10, 80, 255);
   fill(0);
-  rect(330, 350, 30, 50, 5); // Phone
+  rect(330, 350, 30, 50, 5);
 
-  // glowing heart
   push();
   translate(345, 375);
-  fill(255, 105, 180, glowLevel); // Hot pink with glow
+  fill(255, 105, 180, glowLevel);
   noStroke();
   beginShape();
   vertex(0, 0);
@@ -133,10 +134,21 @@ function drawField() {
   endShape(CLOSE);
   pop();
 
+  // move
   if (buttonPressed > 0) {
     girlX -= runSpeed * 0.5;
     girlY -= runSpeed * 0.3;
     distance += runSpeed * 0.1;
+  }
+}
+
+function generateGrass() {
+  noStroke();
+  for (let x = 0; x < width; x += 2) {
+    let noiseVal = noise(x * 0.05, frameCount * 0.01);
+    let h = map(noiseVal, 0, 1, 10, 40);
+    fill(30, random(150, 200), 30);
+    rect(x, height - h, 2, h);
   }
 }
 
