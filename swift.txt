@@ -93,15 +93,15 @@ function drawPhoneLoveBombing() {
   fill(255);
   rect(50, 20, 300, 360, 20);
 
-  // hearts
+  // hearts (more violent movement)
   if (frameCount % heartSpawnRate === 0) {
     let x = random(80, 280);
     let y = 360;
-    hearts.push(new Heart(x, y));
+    hearts.push(new Heart(x, y, true)); // Pass true for violent behavior
   }
 
   for (let i = 0; i < hearts.length; i++) {
-    hearts[i].update();
+    hearts[i].update(true); // Update for shaking
     hearts[i].display();
   }
 
@@ -116,7 +116,7 @@ function drawField() {
   generateGrass();           // grass
 
   // scale stuff
-  let scaleFactor = 1 - distance * 0.015;
+  let scaleFactor = 1 - distance * 0.01; // slower shrinking
   scaleFactor = constrain(scaleFactor, 0.2, 1);
   let headY = girlY - distance * 5;
 
@@ -155,11 +155,19 @@ function drawField() {
   endShape(CLOSE);
   pop();
 
-  // move
+  // move straight towards the upper center
   if (buttonPressed > 0) {
-    girlX -= runSpeed * 0.5;
-    girlY -= runSpeed * 0.3;
+    girlX = lerp(girlX, width / 2, 0.01); // Move horizontally towards center
+    girlY -= runSpeed * 0.5;  // Move vertically upwards
     distance += runSpeed * 0.1;
+
+    // Emit hearts when button is clicked
+    let newHeartX = 345;
+    let newHeartY = 375;
+    let numHearts = buttonPressed; // more hearts per click
+    for (let i = 0; i < numHearts; i++) {
+      hearts.push(new Heart(newHeartX, newHeartY));
+    }
   }
 }
 
@@ -195,27 +203,36 @@ function mousePressed() { // scenes
   if (scene < 3) {
     scene++;
   } else if (scene === 3 && mouseX > 330 && mouseX < 360 && mouseY > 350 && mouseY < 400) {
+    // If the button is clicked in scene 3, emit hearts
     buttonPressed++;
     runSpeed = buttonPressed * 0.2;
+
+    // Emit hearts with button click (using phone button's position)
+    let newHeartX = 345;
+    let newHeartY = 375;
+    let numHearts = buttonPressed; // more hearts per click
+    for (let i = 0; i < numHearts; i++) {
+      hearts.push(new Heart(newHeartX, newHeartY));
+    }
   }
 }
 
 class Heart {
-  constructor(x, y) {
+  constructor(x, y, violent = false) {
     this.x = x;
     this.y = y;
     this.size = random(15, 30);
-    this.speed = random(1, 2);
-    this.wiggle = random(0.05, 0.1);
+    this.speed = random(2, 4); // faster hearts
+    this.wiggle = violent ? random(2, 5) : random(0.05, 0.1); // increased shake for violent hearts
     this.offset = random(100);
     this.r = random(200, 255);
     this.g = random(50, 100);
     this.b = random(100, 255);
   }
 
-  update() {
+  update(violent) {
     this.y -= this.speed;
-    this.x += sin(frameCount * this.wiggle + this.offset);
+    this.x += sin(frameCount * this.wiggle + this.offset) * (violent ? random(3, 5) : 1); // shaking effect
   }
 
   display() { // hearts btw
